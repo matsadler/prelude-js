@@ -1,6 +1,226 @@
 // # Haskell-ish functions for javascript.
 // 
 
+// ## not :: a -> Boolean
+// 
+function not(x) {
+	return !x;
+}
+
+// ## compare :: a -> a -> Number
+// 
+// Returns -1 if the first argument is less than the second, 1 if greater, 0
+// otherwise.
+// 
+function compare(x, y) {
+	if (x < y) {
+		return -1;
+	}
+	if (x > y) {
+		return 1;
+	}
+	return 0;
+}
+
+// ## max :: a -> a -> a
+// 
+// Returns the greater of the two arguments.
+// 
+function max(x, y) {
+	if (x > y) {
+		return x;
+	}
+	return y;
+}
+
+// ## min :: a -> a -> a
+// 
+// Returns the lesser of the two arguments.
+// 
+function min(x, y) {
+	if (x < y) {
+		return x;
+	}
+	return y;
+}
+
+// ## negate :: Number -> Number
+// 
+function negate(x) {
+	return -x;
+}
+
+// ## abs :: Number -> Number
+// 
+var abs = Math.abs;
+
+// ## signum :: Number -> Number
+// 
+function signum(x) {
+	if (x > 0) {
+		return 1;
+	}
+	if (x === 0) {
+		return 0;
+	}
+	return -1;
+}
+
+// ## quot :: Number -> Number -> Number
+// 
+// Interger devision truncated towards zero, e.g. `quot(-3, 2) //=> -1`.
+// 
+function quot(x, y) {
+	return truncate(x / y);
+}
+
+// ## rem :: Number -> Number -> Number
+// 
+// Integer remainder such that `quot(x, y) * y + rem(x, y) === x`.
+// 
+// This is the same as the standard Javascript `%` operator.
+// 
+function rem(x, y) {
+	return x % y;
+}
+
+// ## div :: Number -> Number -> Number
+// 
+// Interger devision truncated towards negative infinity, e.g.
+// `quot(-3, 2) //=> -2`
+// 
+function div(x, y) {
+	return floor(x / y);
+}
+
+// ## mod :: Number -> Number -> Number
+// 
+// Integer modulus such that `div(x, y) * y + mod(x, y) === x`.
+// 
+// This is not quite the same as the Javascript `%`, see `rem`.
+// 
+function mod(x, y) {
+	return x - div(x, y) * y;
+}
+
+// ## quotRem :: Number -> Number -> [Number, Number]
+// 
+function quotRem(x, y) {
+	return [quot(x, y), rem(x, y)];
+}
+
+// ## divMod :: Number -> Number -> (Number, Number)
+// 
+function divMod(x, y) {
+	return [div(x, y), mod(x, y)];
+}
+
+// ## recip :: Number -> Number
+// 
+function recip(x) {
+	return 1 / x;
+}
+
+// ## pi :: Number
+// 
+var pi = Math.pi;
+
+// ## exp :: Number -> Number
+// 
+var exp = Math.exp;
+
+// ## sqrt :: Number -> Number
+// 
+var sqrt = Math.sqrt;
+
+// ## log :: Number -> Number
+// 
+var log = Math.log;
+
+// ## sin :: Number -> Number
+// 
+var sin = Math.sin;
+
+// ## tan :: Number -> Number
+// 
+var tan = Math.tan;
+
+// ## cos :: Number -> Number
+// 
+var cos = Math.cos;
+
+// ## asin :: Number -> Number
+// 
+var asin = Math.asin;
+
+// ## atan :: Number -> Number
+// 
+var atan = Math.atan;
+
+// ## acos :: Number -> Number
+// 
+var acos = Math.acos;
+
+// ## truncate :: Number -> Number
+// 
+// `truncate(x)` returns the integer nearest `x`, between 0 and `x`, e.g.
+// 
+//     truncate(1.5)    //=> 1
+//     truncate(-1.5)   //=> -1
+// 
+function truncate(x) {
+	if (x > 0) {
+		return floor(x);
+	}
+	return ceiling(x);
+}
+
+// ## round :: Number -> Number
+// 
+// Returns the nearest integer. .5 rounds towards 0.
+// 
+var round = Math.round;
+
+// ## ceiling :: Number -> Number
+// 
+// Returns the nearest integer not less than the number supplied.
+// 
+var ceiling = Math.ceil;
+
+// ## floor :: Number -> Number
+// 
+// Returns the nearest integer not greater than the number supplied.
+// 
+var floor = Math.floor;
+
+// ## isInfinite :: Number -> Boolean
+// 
+function isInfinite(x) {
+	return (typeof x === "number") && !isNaN(x) && !isFinite(x);
+}
+
+// ## isNegativeZero :: Number -> Boolean
+// 
+function isNegativeZero(x) {
+	return x === 0 && (1 / x) === -Infinity;
+}
+
+// ## atan2 :: Number -> Number -> Number
+// 
+var atan2 = Math.atan2;
+
+// ## even :: Number -> Boolean
+// 
+function even(x) {
+	return x % 2 === 0;
+}
+
+// ## odd :: Number -> Boolean
+// 
+function odd(x) {
+	return x % 2 !== 0;
+}
+
 // ## each :: [a] -> (a -> b) -> [a]
 // 
 // Applies a function to each element in an array, returning the original array.
@@ -37,7 +257,7 @@ function append(arrayA, arrayB) {
 	return arrayA.concat(arrayB);
 }
 
-// ## filter :: [a] -> (a -> Bool) -> [a]
+// ## filter :: [a] -> (a -> Boolean) -> [a]
 // 
 // Applies a function to each element in an array, returning an array of only
 // the elements for which true was returned.
@@ -70,7 +290,7 @@ function words(string) {
 	return string.split(/\s/);
 }
 
-// ## all :: [a] -> (a -> Bool) -> Bool
+// ## all :: [a] -> (a -> Boolean) -> Boolean
 // 
 // Returns true if the function returns true for all elements in the array,
 // false otherwise.
@@ -81,7 +301,7 @@ function all(array, func) {
 	});
 }
 
-// ## partition :: [a] -> (a -> Bool) -> [[a], [a]]
+// ## partition :: [a] -> (a -> Boolean) -> [[a], [a]]
 // 
 // Applies a function to each element in an array, returning a pair of arrays,
 // the first of the elements for which true was returned, the second the
@@ -100,7 +320,7 @@ function partition(array, func) {
 	});
 }
 
-// ## elem :: a -> [a] -> Bool
+// ## elem :: a -> [a] -> Boolean
 // 
 // Returns true if element is in the array, false otherwise.
 // 
