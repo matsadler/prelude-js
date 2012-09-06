@@ -221,6 +221,93 @@ function odd(x) {
 	return x % 2 !== 0;
 }
 
+// ## id :: a -> a
+// 
+// Identity. Simply returns its argument.
+// 
+function id(x) {
+	return x;
+}
+
+// ## compose :: (b -> c) -> (a -> b) -> a -> c
+// 
+// Takes two functions and returns a new function that applies the first to the
+// result of the second applied to its arguments.
+// 
+function compose(funcA, funcB) {
+	return function () {
+		return funcA(funcB.apply(this, arguments));
+	};
+}
+
+// ## partial :: (a -> b -> c) -> a -> (b -> c)
+// 
+// Takes a function and an argument and applies that argument, returning a
+// function that takes one less argument.
+// 
+function partial(func, arg) {
+	return function () {
+		var args = Array.prototype.slice.call(arguments);
+		args.unshift(arg);
+		return func.apply(this, args);
+	};
+}
+
+// ## flip :: (a -> b -> c) -> b -> a -> c
+// 
+// Returns a function the same as the supplied function, with the first two
+// arguments reversed.
+// 
+function flip(func) {
+	return function () {
+		var args = Array.prototype.slice.call(arguments),
+			a = args[0],
+			b = args[1];
+		args[0] = b;
+		args[1] = a;
+		return apply(func, args);
+	};
+}
+
+// call :: (a -> b) -> a -> b
+// 
+// `call(foo, bar, baz)` calls the function `foo` with the arguments `bar` and
+// `baz`, and is equivalent to `foo(bar, baz)`.
+// 
+function call(func) {
+	return func.apply(this, arguments);
+}
+
+// apply :: (a -> b) -> [a] -> b
+// 
+// `call(foo, [bar, baz])` calls the function `foo` with the arguments `bar` and
+// `baz`, and is equivalent to `foo(bar, baz)`.
+// 
+function apply(func, args) {
+	return func.apply(this, args);
+}
+
+// ## until :: (a -> Bool) -> (a -> a) -> a -> a
+// 
+//     until(function (x) {
+//         return x === 5;
+//     }, function (x) {
+//         return x + 1;
+//     }, 0)   // => 5
+// 
+function until(predicate, func, value) {
+	while (!predicate(value)) {
+		value = func(value);
+	}
+	return value;
+}
+
+// ## error :: String -> undefined
+// 
+function error(message) {
+	throw new Error(message);
+}
+
 // ## each :: [a] -> (a -> b) -> [a]
 // 
 // Applies a function to each element in an array, returning the original array.
@@ -236,17 +323,15 @@ function each(array, func) {
 	return array;
 }
 
-// ## foldl :: a -> [b] -> (a -> b -> a) -> a
+// ## map :: [a] -> (a -> b) -> [b]
 // 
-// Reduces the array from the left, supplying the starting value and the first
-// element to the function, then the result of that to the function with the
-// second element, and so on.
+// Applies a function to each element in an array, returning a new array of the
+// results.
 // 
-function foldl(acc, array, func) {
-	each(array, function (element) {
-		acc = func(acc, element);
+function map(array, func) {
+	return foldl([], array, function (acc, element) {
+		return append(acc, [func(element)]);
 	});
-	return acc;
 }
 
 // ## append :: [a] -> [a] -> [a]
@@ -271,36 +356,6 @@ function filter(array, func) {
 	});
 }
 
-// ## map :: [a] -> (a -> b) -> [b]
-// 
-// Applies a function to each element in an array, returning a new array of the
-// results.
-// 
-function map(array, func) {
-	return foldl([], array, function (acc, element) {
-		return append(acc, [func(element)]);
-	});
-}
-
-// ## words :: String -> [String]
-// 
-// Splits a string around whitespace into an array of strings.
-// 
-function words(string) {
-	return string.split(/\s/);
-}
-
-// ## all :: [a] -> (a -> Boolean) -> Boolean
-// 
-// Returns true if the function returns true for all elements in the array,
-// false otherwise.
-// 
-function all(array, func) {
-	return foldl(true, array, function (acc, element) {
-		return acc && func(element);
-	});
-}
-
 // ## partition :: [a] -> (a -> Boolean) -> [[a], [a]]
 // 
 // Applies a function to each element in an array, returning a pair of arrays,
@@ -320,6 +375,30 @@ function partition(array, func) {
 	});
 }
 
+// ## foldl :: a -> [b] -> (a -> b -> a) -> a
+// 
+// Reduces the array from the left, supplying the starting value and the first
+// element to the function, then the result of that to the function with the
+// second element, and so on.
+// 
+function foldl(acc, array, func) {
+	each(array, function (element) {
+		acc = func(acc, element);
+	});
+	return acc;
+}
+
+// ## all :: [a] -> (a -> Boolean) -> Boolean
+// 
+// Returns true if the function returns true for all elements in the array,
+// false otherwise.
+// 
+function all(array, func) {
+	return foldl(true, array, function (acc, element) {
+		return acc && func(element);
+	});
+}
+
 // ## elem :: a -> [a] -> Boolean
 // 
 // Returns true if element is in the array, false otherwise.
@@ -328,26 +407,10 @@ function elem(obj, array) {
 	return array.indexOf(obj) >= 0;
 }
 
-// ## compose :: (b -> c) -> (a -> b) -> a -> c
+// ## words :: String -> [String]
 // 
-// Takes two functions and returns a new function that applies the first to
-// the result of the second applied to its arguments.
+// Splits a string around whitespace into an array of strings.
 // 
-function compose(funcA, funcB) {
-	return function () {
-		return funcA(funcB.apply(this, arguments));
-	};
-}
-
-// ## partial :: (a -> b -> c) -> a -> (b -> c)
-// 
-// Takes a function and an argument and applies that argument, returning a
-// function that takes one less argument.
-// 
-function partial(func, arg) {
-	return function () {
-		var args = Array.prototype.slice.call(arguments);
-		args.unshift(arg);
-		return func.apply(this, args);
-	};
+function words(string) {
+	return string.split(/\s/);
 }
