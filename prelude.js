@@ -338,9 +338,7 @@ function map(array, func) {
 // 
 // Adds the second array to the end of the first.
 // 
-function append(arrayA, arrayB) {
-	return arrayA.concat(arrayB);
-}
+var append = Array.prototype.concat.call;
 
 // ## filter :: [a] -> (a -> Boolean) -> [a]
 // 
@@ -375,6 +373,60 @@ function partition(array, func) {
 	});
 }
 
+// ## head :: [a] -> a
+// 
+// Returns the first element of an array.
+// 
+function head(array) {
+	return array[0];
+}
+
+// ## last :: [a] -> a
+// 
+// Returns the last element of an array.
+// 
+function last(array) {
+	return array[array.length - 1];
+}
+
+// ## tail :: [a] -> [a]
+// 
+// Returns all the elements after the first element of an array.
+// 
+function tail(array) {
+	return Array.prototype.slice.call(array, 1);
+}
+
+// ## init :: [a] -> [a]
+// 
+// Returns all the elements except the last element of an array.
+// 
+function init(array) {
+	return Array.prototype.slice.call(array, 0, -1);
+}
+
+// ## null_ :: [a] -> Boolean
+// 
+// Returns true if an array is empty, false otherwise.
+// 
+function null_(array) {
+	return array.length === 0;
+}
+
+// ## length :: [a] -> Number
+// 
+// Returns the length of an array. O(1).
+// 
+function length(array) {
+	return array.length;
+}
+
+// ## reverse :: [a] -> [a]
+// 
+function reverse(array) {
+	return Array.prototype.reverse.call(array);
+}
+
 // ## foldl :: a -> [b] -> (a -> b -> a) -> a
 // 
 // Reduces the array from the left, supplying the starting value and the first
@@ -388,14 +440,93 @@ function foldl(acc, array, func) {
 	return acc;
 }
 
+// ## foldl1 :: [a] -> (a -> a -> a) -> a
+// 
+function foldl1(array, func) {
+	return foldl(head(array), tail(array), func);
+}
+
+// ## foldr :: a -> [b] -> (b -> a -> a) -> a
+// 
+function foldr(acc, array, func) {
+	return foldl(acc, reverse(array), flip(func));
+}
+
+// ## foldr1 :: [a] -> (a -> a -> a) -> a
+// 
+function foldr1(array, func) {
+	return foldr(last(array), init(array), func);
+}
+
+// ## and :: [a] -> Boolean
+// 
+function and(array) {
+	return all(array, id);
+}
+
+// ## or :: [a] -> Boolean
+// 
+function or(array) {
+	return any(array, id);
+}
+
+// ## any :: [a] -> (a -> Boolean) -> Boolean
+// 
+// Returns true if the function returns true for any element in the array, false
+// otherwise.
+// 
+function any(array, func) {
+	var i;
+	for (i = 0; i < array.length; i += 1) {
+		if (func(array[i])) {
+			return true;
+		}
+	}
+	return false;
+}
+
 // ## all :: [a] -> (a -> Boolean) -> Boolean
 // 
-// Returns true if the function returns true for all elements in the array,
-// false otherwise.
+// Returns false if the function returns false any element in the array, true
+// otherwise.
 // 
 function all(array, func) {
-	return foldl(true, array, function (acc, element) {
-		return acc && func(element);
+	var i;
+	for (i = 0; i < array.length; i += 1) {
+		if (!func(array[i])) {
+			return false;
+		}
+	}
+	return true;
+}
+
+// ## sum :: [Number] -> Number
+// 
+function sum(array) {
+	return foldl(0, array, function (acc, x) {
+		return acc + x;
+	});
+}
+
+// ## product :: [Number] -> Number
+// 
+function product(array) {
+	return foldl(0, array, function (acc, x) {
+		return acc * x;
+	});
+}
+
+// ## concat :: [[a]] -> [a]
+// 
+function concat(array) {
+	return foldl1(array, append);
+}
+
+// ## concatMap :: [a] -> (a -> [b]) -> [b]
+// 
+function concatMap(array, func) {
+	return foldl([], array, function (acc, element) {
+		return append(acc, func(element));
 	});
 }
 
@@ -404,7 +535,7 @@ function all(array, func) {
 // Returns true if element is in the array, false otherwise.
 // 
 function elem(obj, array) {
-	return array.indexOf(obj) >= 0;
+	return Array.prototype.indexOf.call(array, obj) >= 0;
 }
 
 // ## words :: String -> [String]
