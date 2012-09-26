@@ -619,6 +619,20 @@
 	}
 	prelude.concatMap = concatMap;
 
+	// ## maximum :: [a] -> a
+	// 
+	function maximum(array) {
+		return foldl1(array, max);
+	}
+	prelude.maximum = maximum;
+
+	// ## minimum :: [a] -> a
+	// 
+	function minimum(array) {
+		return foldl1(array, min);
+	}
+	prelude.minimum = minimum;
+
 	// ## elem :: a -> [a] -> Boolean
 	// 
 	// Returns true if element is in the array, false otherwise.
