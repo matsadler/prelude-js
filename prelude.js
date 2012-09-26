@@ -5,7 +5,7 @@
 (function () {
 	var prelude = {};
 	
-	if (typeof exports !== "undefined") {
+	if (typeof exports === "object") {
 		module.exports = prelude;
 	} else {
 		this.prelude = prelude;
