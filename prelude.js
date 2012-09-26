@@ -374,7 +374,9 @@
 	// 
 	// Adds the second array to the end of the first.
 	// 
-	var append = prelude.append = Array.prototype.concat.call;
+	var append = prelude.append = function append(xs, ys) {
+		return Array.prototype.concat.call(xs, ys);
+	};
 
 	// ## filter :: [a] -> (a -> Boolean) -> [a]
 	// 
