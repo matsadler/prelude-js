@@ -11,7 +11,7 @@
 		this.prelude = prelude;
 	}
 	
-	// prelude.importUnqualified(object[, functionNames])
+	// #### prelude.importUnqualified(object[, functionNames])
 	// 
 	// Add functions as properties of object. If the global object is supplied
 	// then the functions will be available unqualified.
@@ -35,15 +35,19 @@
 		}
 	}
 	prelude.importUnqualified = importUnqualified;
-	
-	// ## not :: a -> Boolean
+
+	// ## Boolean functions
+
+	// #### not :: a -> Boolean
 	// 
 	function not(x) {
 		return !x;
 	}
 	prelude.not = not;
 
-	// ## compare :: a -> a -> Number
+	// ## Ordering functions
+
+	// #### compare :: a -> a -> Number
 	// 
 	// Returns -1 if the first argument is less than the second, 1 if greater, 0
 	// otherwise.
@@ -59,7 +63,7 @@
 	}
 	prelude.compare = compare;
 
-	// ## max :: a -> a -> a
+	// #### max :: a -> a -> a
 	// 
 	// Returns the greater of the two arguments.
 	// 
@@ -71,7 +75,7 @@
 	}
 	prelude.max = max;
 
-	// ## min :: a -> a -> a
+	// #### min :: a -> a -> a
 	// 
 	// Returns the lesser of the two arguments.
 	// 
@@ -83,18 +87,20 @@
 	}
 	prelude.min = min;
 
-	// ## negate :: Number -> Number
+	// ## Numeric functions
+
+	// #### negate :: Number -> Number
 	// 
 	function negate(x) {
 		return -x;
 	}
 	prelude.negate = negate;
 
-	// ## abs :: Number -> Number
+	// #### abs :: Number -> Number
 	// 
 	prelude.abs = Math.abs;
 
-	// ## signum :: Number -> Number
+	// #### signum :: Number -> Number
 	// 
 	function signum(x) {
 		if (x > 0) {
@@ -107,7 +113,7 @@
 	}
 	prelude.signum = signum;
 
-	// ## quot :: Number -> Number -> Number
+	// #### quot :: Number -> Number -> Number
 	// 
 	// Interger devision truncated towards zero, e.g. `quot(-3, 2) //=> -1`.
 	// 
@@ -116,7 +122,7 @@
 	}
 	prelude.quot = quot;
 
-	// ## rem :: Number -> Number -> Number
+	// #### rem :: Number -> Number -> Number
 	// 
 	// Integer remainder such that `quot(x, y) * y + rem(x, y) === x`.
 	// 
@@ -127,7 +133,7 @@
 	}
 	prelude.rem = rem;
 
-	// ## div :: Number -> Number -> Number
+	// #### div :: Number -> Number -> Number
 	// 
 	// Interger devision truncated towards negative infinity, e.g.
 	// `quot(-3, 2) //=> -2`
@@ -137,7 +143,7 @@
 	}
 	prelude.div = div;
 
-	// ## mod :: Number -> Number -> Number
+	// #### mod :: Number -> Number -> Number
 	// 
 	// Integer modulus such that `div(x, y) * y + mod(x, y) === x`.
 	// 
@@ -148,68 +154,68 @@
 	}
 	prelude.mod = mod;
 
-	// ## quotRem :: Number -> Number -> [Number, Number]
+	// #### quotRem :: Number -> Number -> [Number, Number]
 	// 
 	function quotRem(x, y) {
 		return [quot(x, y), rem(x, y)];
 	}
 	prelude.quotRem = quotRem;
 
-	// ## divMod :: Number -> Number -> (Number, Number)
+	// #### divMod :: Number -> Number -> [Number, Number]
 	// 
 	function divMod(x, y) {
 		return [div(x, y), mod(x, y)];
 	}
 	prelude.divMod = divMod;
 
-	// ## recip :: Number -> Number
+	// #### recip :: Number -> Number
 	// 
 	function recip(x) {
 		return 1 / x;
 	}
 	prelude.recip = recip;
 
-	// ## pi :: Number
+	// #### pi :: Number
 	// 
 	prelude.pi = Math.pi;
 
-	// ## exp :: Number -> Number
+	// #### exp :: Number -> Number
 	// 
 	prelude.exp = Math.exp;
 
-	// ## sqrt :: Number -> Number
+	// #### sqrt :: Number -> Number
 	// 
 	prelude.sqrt = Math.sqrt;
 
-	// ## log :: Number -> Number
+	// #### log :: Number -> Number
 	// 
 	prelude.log = Math.log;
 
-	// ## sin :: Number -> Number
+	// #### sin :: Number -> Number
 	// 
 	prelude.sin = Math.sin;
 
-	// ## tan :: Number -> Number
+	// #### tan :: Number -> Number
 	// 
 	prelude.tan = Math.tan;
 
-	// ## cos :: Number -> Number
+	// #### cos :: Number -> Number
 	// 
 	prelude.cos = Math.cos;
 
-	// ## asin :: Number -> Number
+	// #### asin :: Number -> Number
 	// 
 	prelude.asin = Math.asin;
 
-	// ## atan :: Number -> Number
+	// #### atan :: Number -> Number
 	// 
 	prelude.atan = Math.atan;
 
-	// ## acos :: Number -> Number
+	// #### acos :: Number -> Number
 	// 
 	prelude.acos = Math.acos;
 
-	// ## truncate :: Number -> Number
+	// #### truncate :: Number -> Number
 	// 
 	// `truncate(x)` returns the integer nearest `x`, between 0 and `x`, e.g.
 	// 
@@ -224,57 +230,59 @@
 	}
 	prelude.truncate = truncate;
 
-	// ## round :: Number -> Number
+	// #### round :: Number -> Number
 	// 
 	// Returns the nearest integer. .5 rounds towards 0.
 	// 
 	prelude.round = Math.round;
 
-	// ## ceiling :: Number -> Number
+	// #### ceiling :: Number -> Number
 	// 
 	// Returns the nearest integer not less than the number supplied.
 	// 
 	prelude.ceiling = Math.ceil;
 
-	// ## floor :: Number -> Number
+	// #### floor :: Number -> Number
 	// 
 	// Returns the nearest integer not greater than the number supplied.
 	// 
 	prelude.floor = Math.floor;
 
-	// ## isInfinite :: Number -> Boolean
+	// #### isInfinite :: Number -> Boolean
 	// 
 	function isInfinite(x) {
 		return (typeof x === "number") && !isNaN(x) && !isFinite(x);
 	}
 	prelude.isInfinite = isInfinite;
 
-	// ## isNegativeZero :: Number -> Boolean
+	// #### isNegativeZero :: Number -> Boolean
 	// 
 	function isNegativeZero(x) {
 		return x === 0 && (1 / x) === -Infinity;
 	}
 	prelude.isNegativeZero = isNegativeZero;
 
-	// ## atan2 :: Number -> Number -> Number
+	// #### atan2 :: Number -> Number -> Number
 	// 
 	prelude.atan2 = Math.atan2;
 
-	// ## even :: Number -> Boolean
+	// #### even :: Number -> Boolean
 	// 
 	function even(x) {
 		return x % 2 === 0;
 	}
 	prelude.even = even;
 
-	// ## odd :: Number -> Boolean
+	// #### odd :: Number -> Boolean
 	// 
 	function odd(x) {
 		return x % 2 !== 0;
 	}
 	prelude.odd = odd;
 
-	// ## id :: a -> a
+	// ## Miscellaneous functions
+
+	// #### id :: a -> a
 	// 
 	// Identity. Simply returns its argument.
 	// 
@@ -283,10 +291,10 @@
 	}
 	prelude.id = id;
 
-	// ## compose :: (b -> c) -> (a -> b) -> a -> c
+	// #### compose :: (b -> c) -> (a -> b) -> a -> c
 	// 
-	// Takes two functions and returns a new prelude.that = function that
-	// applies the first to the result of the second applied to its arguments.
+	// Takes two functions and returns a new function that applies the first to
+	// the result of the second applied to its arguments.
 	// 
 	function compose(funcA, funcB) {
 		return function () {
@@ -295,11 +303,10 @@
 	}
 	prelude.compose = compose;
 
-	// ## partial :: (a -> b -> c) -> a -> (b -> c)
+	// #### partial :: (a -> b -> c) -> a -> (b -> c)
 	// 
-	// Takes a prelude.and = function and an argument and applies that
-	// argument, returning a prelude.that = function that takes one less
-	// argument.
+	// Takes a function and an argument and applies that argument, returning a
+	// function that takes one less argument.
 	// 
 	function partial(func, arg) {
 		return function () {
@@ -310,10 +317,10 @@
 	}
 	prelude.partial = partial;
 
-	// ## flip :: (a -> b -> c) -> b -> a -> c
+	// #### flip :: (a -> b -> c) -> b -> a -> c
 	// 
-	// Returns a prelude.the = function the same as the supplied function, with
-	// the first two arguments reversed.
+	// Returns a function the same as the supplied function, with the first two
+	// arguments reversed.
 	// 
 	function flip(func) {
 		return function () {
@@ -347,7 +354,7 @@
 	}
 	prelude.apply = apply;
 
-	// ## until :: (a -> Bool) -> (a -> a) -> a -> a
+	// #### until :: (a -> Bool) -> (a -> a) -> a -> a
 	// 
 	//     until(function (x) {
 	//         return x === 5;
@@ -363,14 +370,14 @@
 	}
 	prelude.until = until;
 
-	// ## error :: String -> undefined
+	// #### error :: String -> undefined
 	// 
 	function error(message) {
 		throw new Error(message);
 	}
 	prelude.error = error;
 
-	// ## each :: [a] -> (a -> b) -> [a]
+	// #### each :: [a] -> (a -> b) -> [a]
 	// 
 	// Applies a prelude.to = function to each element in an array, returning
 	// the original array.
@@ -387,10 +394,12 @@
 	}
 	prelude.each = each;
 
-	// ## map :: [a] -> (a -> b) -> [b]
+	// ## Array operations
+
+	// #### map :: [a] -> (a -> b) -> [b]
 	// 
-	// Applies a prelude.to = function to each element in an array, returning a
-	// new array of the results.
+	// Applies a function to each element in an array, returning a new array of
+	// the results.
 	// 
 	function map(array, func) {
 		return foldl([], array, function (acc, element) {
@@ -399,7 +408,7 @@
 	}
 	prelude.map = map;
 
-	// ## append :: [a] -> [a] -> [a]
+	// #### append :: [a] -> [a] -> [a]
 	// 
 	// Adds the second array to the end of the first.
 	// 
@@ -408,10 +417,10 @@
 	}
 	prelude.append = append;
 
-	// ## filter :: [a] -> (a -> Boolean) -> [a]
+	// #### filter :: [a] -> (a -> Boolean) -> [a]
 	// 
-	// Applies a prelude.to = function to each element in an array, returning
-	// an array of only the elements for which true was returned.
+	// Applies a function to each element in an array, returning an array of
+	// only the elements for which true was returned.
 	// 
 	function filter(array, func) {
 		return foldl([], array, function(acc, element) {
@@ -423,7 +432,7 @@
 	}
 	prelude.filter = filter;
 
-	// ## partition :: [a] -> (a -> Boolean) -> [[a], [a]]
+	// #### partition :: [a] -> (a -> Boolean) -> [[a], [a]]
 	// 
 	// Applies a prelude.to = function to each element in an array, returning a
 	// pair of arrays, the first of the elements for which true was returned,
@@ -443,7 +452,7 @@
 	}
 	prelude.partition = partition;
 
-	// ## head :: [a] -> a
+	// #### head :: [a] -> a
 	// 
 	// Returns the first element of an array.
 	// 
@@ -452,7 +461,7 @@
 	}
 	prelude.head = head;
 
-	// ## last :: [a] -> a
+	// #### last :: [a] -> a
 	// 
 	// Returns the last element of an array.
 	// 
@@ -461,7 +470,7 @@
 	}
 	prelude.last = last;
 
-	// ## tail :: [a] -> [a]
+	// #### tail :: [a] -> [a]
 	// 
 	// Returns all the elements after the first element of an array.
 	// 
@@ -470,7 +479,7 @@
 	}
 	prelude.tail = tail;
 
-	// ## init :: [a] -> [a]
+	// #### init :: [a] -> [a]
 	// 
 	// Returns all the elements except the last element of an array.
 	// 
@@ -479,7 +488,7 @@
 	}
 	prelude.init = init;
 
-	// ## null_ :: [a] -> Boolean
+	// #### null_ :: [a] -> Boolean
 	// 
 	// Returns true if an array is empty, false otherwise.
 	// 
@@ -488,7 +497,7 @@
 	}
 	prelude.null_ = null_;
 
-	// ## length :: [a] -> Number
+	// #### length :: [a] -> Number
 	// 
 	// Returns the length of an array. O(1).
 	// 
@@ -497,14 +506,16 @@
 	}
 	prelude.length = length;
 
-	// ## reverse :: [a] -> [a]
+	// #### reverse :: [a] -> [a]
 	// 
 	function reverse(array) {
 		return Array.prototype.reverse.call(array);
 	}
 	prelude.reverse = reverse;
 
-	// ## foldl :: a -> [b] -> (a -> b -> a) -> a
+	// ## Reducing arrays (folds)
+
+	// #### foldl :: a -> [b] -> (a -> b -> a) -> a
 	// 
 	// Reduces the array from the left, supplying the starting value and the
 	// first element to the function, then the result of that to the
@@ -518,45 +529,47 @@
 	}
 	prelude.foldl = foldl;
 
-	// ## foldl1 :: [a] -> (a -> a -> a) -> a
+	// #### foldl1 :: [a] -> (a -> a -> a) -> a
 	// 
 	function foldl1(array, func) {
 		return foldl(head(array), tail(array), func);
 	}
 	prelude.foldl1 = foldl1;
 
-	// ## foldr :: a -> [b] -> (b -> a -> a) -> a
+	// #### foldr :: a -> [b] -> (b -> a -> a) -> a
 	// 
 	function foldr(acc, array, func) {
 		return foldl(acc, reverse(array), flip(func));
 	}
 	prelude.foldr = foldr;
 
-	// ## foldr1 :: [a] -> (a -> a -> a) -> a
+	// #### foldr1 :: [a] -> (a -> a -> a) -> a
 	// 
 	function foldr1(array, func) {
 		return foldr(last(array), init(array), func);
 	}
 	prelude.foldr1 = foldr1;
 
-	// ## and :: [a] -> Boolean
+	// ### Special folds
+
+	// #### and :: [a] -> Boolean
 	// 
 	function and(array) {
 		return all(array, id);
 	}
 	prelude.and = and;
 
-	// ## or :: [a] -> Boolean
+	// #### or :: [a] -> Boolean
 	// 
 	function or(array) {
 		return any(array, id);
 	}
 	prelude.or = or;
 
-	// ## any :: [a] -> (a -> Boolean) -> Boolean
+	// #### any :: [a] -> (a -> Boolean) -> Boolean
 	// 
-	// Returns true if the prelude.returns = function returns true for any
-	// element in the array, false otherwise.
+	// Returns true if the function returns true for any element in the array,
+	// false otherwise.
 	// 
 	function any(array, func) {
 		var i;
@@ -569,10 +582,10 @@
 	}
 	prelude.any = any;
 
-	// ## all :: [a] -> (a -> Boolean) -> Boolean
+	// #### all :: [a] -> (a -> Boolean) -> Boolean
 	// 
-	// Returns false if the prelude.returns = function returns false any
-	// element in the array, true otherwise.
+	// Returns false if the function returns false any element in the array,
+	// true otherwise.
 	// 
 	function all(array, func) {
 		var i;
@@ -585,7 +598,7 @@
 	}
 	prelude.all = all;
 
-	// ## sum :: [Number] -> Number
+	// #### sum :: [Number] -> Number
 	// 
 	function sum(array) {
 		return foldl(0, array, function (acc, x) {
@@ -594,7 +607,7 @@
 	}
 	prelude.sum = sum;
 
-	// ## product :: [Number] -> Number
+	// #### product :: [Number] -> Number
 	// 
 	function product(array) {
 		return foldl(0, array, function (acc, x) {
@@ -603,14 +616,14 @@
 	}
 	prelude.product = product;
 
-	// ## concat :: [[a]] -> [a]
+	// #### concat :: [[a]] -> [a]
 	// 
 	function concat(array) {
 		return foldl1(array, append);
 	}
 	prelude.concat = concat;
 
-	// ## concatMap :: [a] -> (a -> [b]) -> [b]
+	// #### concatMap :: [a] -> (a -> [b]) -> [b]
 	// 
 	function concatMap(array, func) {
 		return foldl([], array, function (acc, element) {
@@ -619,21 +632,25 @@
 	}
 	prelude.concatMap = concatMap;
 
-	// ## maximum :: [a] -> a
+	// #### maximum :: [a] -> a
 	// 
 	function maximum(array) {
 		return foldl1(array, max);
 	}
 	prelude.maximum = maximum;
 
-	// ## minimum :: [a] -> a
+	// #### minimum :: [a] -> a
 	// 
 	function minimum(array) {
 		return foldl1(array, min);
 	}
 	prelude.minimum = minimum;
 
-	// ## scanl :: a -> [b] -> (a -> b -> a) -> [a]
+	// ## Building arrays
+
+	// ### Scans
+
+	// #### scanl :: a -> [b] -> (a -> b -> a) -> [a]
 	// 
 	function scanl(initial, array, func) {
 		var result = [initial];
@@ -644,27 +661,29 @@
 	}
 	prelude.scanl = scanl;
 
-	// ## scanl1 :: [a] -> (a -> a -> a) -> [a]
+	// #### scanl1 :: [a] -> (a -> a -> a) -> [a]
 	// 
 	function scanl1(array, func) {
 		return scanl(head(array), tail(array), func);
 	}
 	prelude.scanl1 = scanl1;
 
-	// scanr :: a -> [b] -> (b -> a -> a) -> [a]
+	// #### scanr :: a -> [b] -> (b -> a -> a) -> [a]
 	// 
 	function scanr(initial, array, func) {
 		return reverse(scanl(initial, reverse(array), flip(func)));
 	}
 	prelude.scanr = scanr;
 
-	// scanr1 :: [a] -> (a -> a -> a) -> [a]
+	// #### scanr1 :: [a] -> (a -> a -> a) -> [a]
 	function scanr1(array, func) {
 		return scanr(last(array), init(array), func);
 	}
 	prelude.scanr1 = scanr1;
 
-	// ## elem :: a -> [a] -> Boolean
+	// ## Searching arrays
+
+	// #### elem :: a -> [a] -> Boolean
 	// 
 	// Returns true if element is in the array, false otherwise.
 	// 
@@ -673,7 +692,9 @@
 	}
 	prelude.elem = elem;
 
-	// ## words :: String -> [String]
+	// ## Functions on strings
+
+	// #### words :: String -> [String]
 	// 
 	// Splits a string around whitespace into an array of strings.
 	// 
