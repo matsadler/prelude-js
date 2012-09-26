@@ -633,6 +633,37 @@
 	}
 	prelude.minimum = minimum;
 
+	// ## scanl :: a -> [b] -> (a -> b -> a) -> [a]
+	// 
+	function scanl(initial, array, func) {
+		var result = [initial];
+		each(array, function (element) {
+			result.push(func(last(result), element));
+		});
+		return result;
+	}
+	prelude.scanl = scanl;
+
+	// ## scanl1 :: [a] -> (a -> a -> a) -> [a]
+	// 
+	function scanl1(array, func) {
+		return scanl(head(array), tail(array), func);
+	}
+	prelude.scanl1 = scanl1;
+
+	// scanr :: a -> [b] -> (b -> a -> a) -> [a]
+	// 
+	function scanr(initial, array, func) {
+		return reverse(scanl(initial, reverse(array), flip(func)));
+	}
+	prelude.scanr = scanr;
+
+	// scanr1 :: [a] -> (a -> a -> a) -> [a]
+	function scanr1(array, func) {
+		return scanr(last(array), init(array), func);
+	}
+	prelude.scanr1 = scanr1;
+
 	// ## elem :: a -> [a] -> Boolean
 	// 
 	// Returns true if element is in the array, false otherwise.
