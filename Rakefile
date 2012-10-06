@@ -9,7 +9,10 @@ file "README.md" => "prelude.js" do |task|
   File.open(task.name, "w") do |out|
     task.prerequisites.each do |prerequisite|
       File.open(prerequisite, "r") do |input|
-        input.each_line {|line| out << line[3..-1] if line =~ %r{// }}
+        input.each_line do |line|
+          line.lstrip!
+          out << line[3..-1] if line =~ %r{// }
+        end
       end
     end
   end
