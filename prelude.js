@@ -388,7 +388,7 @@
 	function each(array, func) {
 		var i;
 		for (i = 0; i < array.length; i += 1) {
-			func.call({}, array[i]);
+			func(array[i]);
 		}
 		return array;
 	}
