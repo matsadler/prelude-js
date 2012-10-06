@@ -258,6 +258,13 @@ true otherwise.
 #### scanr :: a -> [b] -> (b -> a -> a) -> [a]
 
 #### scanr1 :: [a] -> (a -> a -> a) -> [a]
+## Sublists
+#### take :: Number -> [a] -> [a]
+
+#### drop :: Number -> [a] -> [a]
+
+#### splitAt :: Number -> [a] -> [[a], [a]]
+
 ## Searching arrays
 #### elem :: a -> [a] -> Boolean
 

@@ -681,6 +681,29 @@
 	}
 	prelude.scanr1 = scanr1;
 
+	// ## Sublists
+
+	// #### take :: Number -> [a] -> [a]
+	// 
+	function take(x, array) {
+		return Array.prototype.slice.call(array, 0, x);
+	}
+	prelude.take = take;
+
+	// #### drop :: Number -> [a] -> [a]
+	// 
+	function drop(x, array) {
+		return Array.prototype.slice.call(array, x);
+	}
+	prelude.drop = drop;
+
+	// #### splitAt :: Number -> [a] -> [[a], [a]]
+	// 
+	function splitAt(x, array) {
+		return [take(x, array), drop(x, array)];
+	}
+	prelude.splitAt = splitAt;
+
 	// ## Searching arrays
 
 	// #### elem :: a -> [a] -> Boolean
