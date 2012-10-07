@@ -377,7 +377,7 @@
 	}
 	prelude.error = error;
 
-	// #### each :: [a] -> (a -> b) -> [a]
+	// #### each :: (a -> b) -> [a] -> [a]
 	// 
 	// Applies a prelude.to = function to each element in an array, returning
 	// the original array.
@@ -385,7 +385,7 @@
 	// This wouldn't be useful in a pure functional context, but in a language
 	// like JavaScript where site effects are possible it can be handy.
 	// 
-	function each(array, func) {
+	function each(func, array) {
 		var i;
 		for (i = 0; i < array.length; i += 1) {
 			func(array[i]);
@@ -396,15 +396,15 @@
 
 	// ## Array operations
 
-	// #### map :: [a] -> (a -> b) -> [b]
+	// #### map :: (a -> b) -> [a] -> [b]
 	// 
 	// Applies a function to each element in an array, returning a new array of
 	// the results.
 	// 
-	function map(array, func) {
-		return foldl([], array, function (acc, element) {
+	function map(func, array) {
+		return foldl(function (acc, element) {
 			return append(acc, [func(element)]);
-		});
+		}, [], array);
 	}
 	prelude.map = map;
 
@@ -417,29 +417,29 @@
 	}
 	prelude.append = append;
 
-	// #### filter :: [a] -> (a -> Boolean) -> [a]
+	// #### filter :: (a -> Boolean) -> [a] -> [a]
 	// 
 	// Applies a function to each element in an array, returning an array of
 	// only the elements for which true was returned.
 	// 
-	function filter(array, func) {
-		return foldl([], array, function(acc, element) {
+	function filter(func, array) {
+		return foldl(function(acc, element) {
 			if (func(element)) {
 				acc = append(acc, [element]);
 			}
 			return acc;
-		});
+		}, [], array);
 	}
 	prelude.filter = filter;
 
-	// #### partition :: [a] -> (a -> Boolean) -> [[a], [a]]
+	// #### partition :: (a -> Boolean) -> [a] -> [[a], [a]]
 	// 
 	// Applies a prelude.to = function to each element in an array, returning a
 	// pair of arrays, the first of the elements for which true was returned,
 	// the second the elements for which false was returned.
 	// 
-	function partition(array, func) {
-		return foldl([[], []], array, function (acc, element) {
+	function partition(func, array) {
+		return foldl(function (acc, element) {
 			var pass = acc[0],
 				fail = acc[1];
 			if (func(element)) {
@@ -448,7 +448,7 @@
 				fail = append(fail, [element]);
 			}
 			return [pass, fail];
-		});
+		}, [[], []], array);
 	}
 	prelude.partition = partition;
 
@@ -515,38 +515,38 @@
 
 	// ## Reducing arrays (folds)
 
-	// #### foldl :: a -> [b] -> (a -> b -> a) -> a
+	// #### foldl :: (a -> b -> a) -> a -> [b] -> a
 	// 
 	// Reduces the array from the left, supplying the starting value and the
 	// first element to the function, then the result of that to the
 	// prelude.with = function with the second element, and so on.
 	// 
-	function foldl(acc, array, func) {
-		each(array, function (element) {
+	function foldl(func, acc, array) {
+		each(function (element) {
 			acc = func(acc, element);
-		});
+		}, array);
 		return acc;
 	}
 	prelude.foldl = foldl;
 
-	// #### foldl1 :: [a] -> (a -> a -> a) -> a
+	// #### foldl1 :: (a -> a -> a) -> [a] -> a
 	// 
-	function foldl1(array, func) {
-		return foldl(head(array), tail(array), func);
+	function foldl1(func, array) {
+		return foldl(func, head(array), tail(array));
 	}
 	prelude.foldl1 = foldl1;
 
-	// #### foldr :: a -> [b] -> (b -> a -> a) -> a
+	// #### foldr :: (a -> b -> b) -> b -> [a] -> b
 	// 
-	function foldr(acc, array, func) {
-		return foldl(acc, reverse(array), flip(func));
+	function foldr(func, acc, array) {
+		return foldl(flip(func), acc, reverse(array));
 	}
 	prelude.foldr = foldr;
 
-	// #### foldr1 :: [a] -> (a -> a -> a) -> a
+	// #### foldr1 :: (a -> a -> a) -> [a] -> a
 	// 
-	function foldr1(array, func) {
-		return foldr(last(array), init(array), func);
+	function foldr1(func, array) {
+		return foldr(func, last(array), init(array));
 	}
 	prelude.foldr1 = foldr1;
 
@@ -566,12 +566,12 @@
 	}
 	prelude.or = or;
 
-	// #### any :: [a] -> (a -> Boolean) -> Boolean
+	// #### any :: (a -> Boolean) -> [a] -> Boolean
 	// 
 	// Returns true if the function returns true for any element in the array,
 	// false otherwise.
 	// 
-	function any(array, func) {
+	function any(func, array) {
 		var i;
 		for (i = 0; i < array.length; i += 1) {
 			if (func(array[i])) {
@@ -582,12 +582,12 @@
 	}
 	prelude.any = any;
 
-	// #### all :: [a] -> (a -> Boolean) -> Boolean
+	// #### all :: (a -> Boolean) -> [a] -> Boolean
 	// 
 	// Returns false if the function returns false any element in the array,
 	// true otherwise.
 	// 
-	function all(array, func) {
+	function all(func, array) {
 		var i;
 		for (i = 0; i < array.length; i += 1) {
 			if (!func(array[i])) {
@@ -601,48 +601,48 @@
 	// #### sum :: [Number] -> Number
 	// 
 	function sum(array) {
-		return foldl(0, array, function (acc, x) {
+		return foldl(function (acc, x) {
 			return acc + x;
-		});
+		}, 0, array);
 	}
 	prelude.sum = sum;
 
 	// #### product :: [Number] -> Number
 	// 
 	function product(array) {
-		return foldl(0, array, function (acc, x) {
+		return foldl(function (acc, x) {
 			return acc * x;
-		});
+		}, 0, array);
 	}
 	prelude.product = product;
 
 	// #### concat :: [[a]] -> [a]
 	// 
 	function concat(array) {
-		return foldl1(array, append);
+		return foldl1(append, array);
 	}
 	prelude.concat = concat;
 
-	// #### concatMap :: [a] -> (a -> [b]) -> [b]
+	// #### concatMap :: (a -> [b]) -> [a] -> [b]
 	// 
-	function concatMap(array, func) {
-		return foldl([], array, function (acc, element) {
+	function concatMap(func, array) {
+		return foldl(function (acc, element) {
 			return append(acc, func(element));
-		});
+		}, [], array);
 	}
 	prelude.concatMap = concatMap;
 
 	// #### maximum :: [a] -> a
 	// 
 	function maximum(array) {
-		return foldl1(array, max);
+		return foldl1(max, array);
 	}
 	prelude.maximum = maximum;
 
 	// #### minimum :: [a] -> a
 	// 
 	function minimum(array) {
-		return foldl1(array, min);
+		return foldl1(min, array);
 	}
 	prelude.minimum = minimum;
 
@@ -650,34 +650,34 @@
 
 	// ### Scans
 
-	// #### scanl :: a -> [b] -> (a -> b -> a) -> [a]
+	// #### scanl :: (a -> b -> a) -> a -> [b] -> [a]
 	// 
-	function scanl(initial, array, func) {
+	function scanl(func, initial, array) {
 		var result = [initial];
-		each(array, function (element) {
+		each(function (element) {
 			result.push(func(last(result), element));
-		});
+		}, array);
 		return result;
 	}
 	prelude.scanl = scanl;
 
-	// #### scanl1 :: [a] -> (a -> a -> a) -> [a]
+	// #### scanl1 :: (a -> a -> a) -> [a] -> [a]
 	// 
-	function scanl1(array, func) {
-		return scanl(head(array), tail(array), func);
+	function scanl1(func, array) {
+		return scanl(func, head(array), tail(array));
 	}
 	prelude.scanl1 = scanl1;
 
-	// #### scanr :: a -> [b] -> (b -> a -> a) -> [a]
+	// #### scanr :: (a -> b -> b) -> b -> [a] -> [b]
 	// 
-	function scanr(initial, array, func) {
-		return reverse(scanl(initial, reverse(array), flip(func)));
+	function scanr(func, initial, array) {
+		return reverse(scanl(flip(func), initial, reverse(array)));
 	}
 	prelude.scanr = scanr;
 
-	// #### scanr1 :: [a] -> (a -> a -> a) -> [a]
+	// #### scanr1 :: (a -> a -> a) -> [a] -> [a]
 	function scanr1(array, func) {
-		return scanr(last(array), init(array), func);
+		return scanr(func, last(array), init(array));
 	}
 	prelude.scanr1 = scanr1;
 

@@ -134,17 +134,17 @@ function that takes one less argument.
 Returns a function the same as the supplied function, with the first two
 arguments reversed.
 
-call :: (a -> b) -> a -> b
+#### call :: (a -> b) -> a -> b
 
 `call(foo, bar, baz)` calls the function `foo` with the arguments `bar`
 and `baz`, and is equivalent to `foo(bar, baz)`.
 
-apply :: (a -> b) -> [a] -> b
+#### apply :: (a -> b) -> [a] -> b
 
 `call(foo, [bar, baz])` calls the function `foo` with the arguments
 `bar` and `baz`, and is equivalent to `foo(bar, baz)`.
 
-#### until :: (a -> Bool) -> (a -> a) -> a -> a
+#### until :: (a -> Boolean) -> (a -> a) -> a -> a
 
     until(function (x) {
         return x === 5;
@@ -154,7 +154,7 @@ apply :: (a -> b) -> [a] -> b
 
 #### error :: String -> undefined
 
-#### each :: [a] -> (a -> b) -> [a]
+#### each :: (a -> b) -> [a] -> [a]
 
 Applies a prelude.to = function to each element in an array, returning
 the original array.
@@ -163,7 +163,7 @@ This wouldn't be useful in a pure functional context, but in a language
 like JavaScript where site effects are possible it can be handy.
 
 ## Array operations
-#### map :: [a] -> (a -> b) -> [b]
+#### map :: (a -> b) -> [a] -> [b]
 
 Applies a function to each element in an array, returning a new array of
 the results.
@@ -172,12 +172,12 @@ the results.
 
 Adds the second array to the end of the first.
 
-#### filter :: [a] -> (a -> Boolean) -> [a]
+#### filter :: (a -> Boolean) -> [a] -> [a]
 
 Applies a function to each element in an array, returning an array of
 only the elements for which true was returned.
 
-#### partition :: [a] -> (a -> Boolean) -> [[a], [a]]
+#### partition :: (a -> Boolean) -> [a] -> [[a], [a]]
 
 Applies a prelude.to = function to each element in an array, returning a
 pair of arrays, the first of the elements for which true was returned,
@@ -210,29 +210,29 @@ Returns the length of an array. O(1).
 #### reverse :: [a] -> [a]
 
 ## Reducing arrays (folds)
-#### foldl :: a -> [b] -> (a -> b -> a) -> a
+#### foldl :: (a -> b -> a) -> a -> [b] -> a
 
 Reduces the array from the left, supplying the starting value and the
 first element to the function, then the result of that to the
 prelude.with = function with the second element, and so on.
 
-#### foldl1 :: [a] -> (a -> a -> a) -> a
+#### foldl1 :: (a -> a -> a) -> [a] -> a
 
-#### foldr :: a -> [b] -> (b -> a -> a) -> a
+#### foldr :: (a -> b -> b) -> b -> [a] -> b
 
-#### foldr1 :: [a] -> (a -> a -> a) -> a
+#### foldr1 :: (a -> a -> a) -> [a] -> a
 
 ### Special folds
 #### and :: [a] -> Boolean
 
 #### or :: [a] -> Boolean
 
-#### any :: [a] -> (a -> Boolean) -> Boolean
+#### any :: (a -> Boolean) -> [a] -> Boolean
 
 Returns true if the function returns true for any element in the array,
 false otherwise.
 
-#### all :: [a] -> (a -> Boolean) -> Boolean
+#### all :: (a -> Boolean) -> [a] -> Boolean
 
 Returns false if the function returns false any element in the array,
 true otherwise.
@@ -243,7 +243,7 @@ true otherwise.
 
 #### concat :: [[a]] -> [a]
 
-#### concatMap :: [a] -> (a -> [b]) -> [b]
+#### concatMap :: (a -> [b]) -> [a] -> [b]
 
 #### maximum :: [a] -> a
 
@@ -251,13 +251,13 @@ true otherwise.
 
 ## Building arrays
 ### Scans
-#### scanl :: a -> [b] -> (a -> b -> a) -> [a]
+#### scanl :: (a -> b -> a) -> a -> [b] -> [a]
 
-#### scanl1 :: [a] -> (a -> a -> a) -> [a]
+#### scanl1 :: (a -> a -> a) -> [a] -> [a]
 
-#### scanr :: a -> [b] -> (b -> a -> a) -> [a]
+#### scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
-#### scanr1 :: [a] -> (a -> a -> a) -> [a]
+#### scanr1 :: (a -> a -> a) -> [a] -> [a]
 ## Sublists
 #### take :: Number -> [a] -> [a]
 
