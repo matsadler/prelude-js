@@ -334,7 +334,7 @@
 	}
 	prelude.flip = flip;
 
-	// call :: (a -> b) -> a -> b
+	// #### call :: (a -> b) -> a -> b
 	// 
 	// `call(foo, bar, baz)` calls the function `foo` with the arguments `bar`
 	// and `baz`, and is equivalent to `foo(bar, baz)`.
@@ -344,7 +344,7 @@
 	}
 	prelude.call = call;
 
-	// apply :: (a -> b) -> [a] -> b
+	// #### apply :: (a -> b) -> [a] -> b
 	// 
 	// `call(foo, [bar, baz])` calls the function `foo` with the arguments
 	// `bar` and `baz`, and is equivalent to `foo(bar, baz)`.
@@ -354,7 +354,7 @@
 	}
 	prelude.apply = apply;
 
-	// #### until :: (a -> Bool) -> (a -> a) -> a -> a
+	// #### until :: (a -> Boolean) -> (a -> a) -> a -> a
 	// 
 	//     until(function (x) {
 	//         return x === 5;
