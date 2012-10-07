@@ -308,11 +308,11 @@
 	// Takes a function and an argument and applies that argument, returning a
 	// function that takes one less argument.
 	// 
-	function partial(func, arg) {
+	function partial(func) {
+		var args = tail(arguments);
 		return function () {
-			var args = Array.prototype.slice.call(arguments);
-			args.unshift(arg);
-			return func.apply(this, args);
+			var innerArgs = Array.prototype.slice.call(arguments);
+			return apply(func, append(args, innerArgs));
 		};
 	}
 	prelude.partial = partial;
