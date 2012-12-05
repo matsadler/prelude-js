@@ -340,7 +340,7 @@
 	// and `baz`, and is equivalent to `foo(bar, baz)`.
 	// 
 	function call(func) {
-		return func.apply(this, arguments);
+		return func.apply(this, tail(arguments));
 	}
 	prelude.call = call;
 
