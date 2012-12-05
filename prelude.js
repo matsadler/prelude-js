@@ -681,6 +681,31 @@
 	}
 	prelude.scanr1 = scanr1;
 
+	// ## Infinite lists
+
+	// #### iterate :: (a -> a) -> a -> null
+	// 
+	// Applies `func` to `x` then `func` to the result of `func(x)` and so on.
+	// Never returns.
+	// 
+	function iterate(func, x) {
+		while (true) {
+			x = func(x);
+		}
+	}
+	prelude.iterate = iterate;
+
+	// #### replicate :: Number -> a -> [a]
+	// 
+	function replicate(i, x) {
+		var array = [];
+		for (i; i > 0; i -= 1) {
+			array.push(x);
+		}
+		return array;
+	}
+	prelude.replicate = replicate;
+
 	// ## Sublists
 
 	// #### take :: Number -> [a] -> [a]

@@ -258,6 +258,14 @@ true otherwise.
 #### scanr :: (a -> b -> b) -> b -> [a] -> [b]
 
 #### scanr1 :: (a -> a -> a) -> [a] -> [a]
+## Infinite lists
+#### iterate :: (a -> a) -> a -> null
+
+Applies `func` to `x` then `func` to the result of `func(x)` and so on.
+Never returns.
+
+#### replicate :: Number -> a -> [a]
+
 ## Sublists
 #### take :: Number -> [a] -> [a]
 
