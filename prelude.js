@@ -65,7 +65,8 @@
 
 	// #### max :: a -> a -> a
 	// 
-	// Returns the greater of the two arguments.
+	// Returns the greater of the two arguments. If the arguments are equal or
+	// the comparison is invalid the second argument is returned.
 	// 
 	function max(x, y) {
 		if (x > y) {
@@ -77,13 +78,14 @@
 
 	// #### min :: a -> a -> a
 	// 
-	// Returns the lesser of the two arguments.
+	// Returns the lesser of the two arguments. If the arguments are equal or
+	// the comparison is invalid the first argument is returned.
 	// 
 	function min(x, y) {
-		if (x < y) {
-			return x;
+		if (y < x) {
+			return y;
 		}
-		return y;
+		return x;
 	}
 	prelude.min = min;
 
@@ -235,9 +237,23 @@
 
 	// #### round :: Number -> Number
 	// 
-	// Returns the nearest integer. .5 rounds towards 0.
+	// Returns the nearest integer. .5 rounds towards even.
 	// 
-	prelude.round = Math.round;
+	function round(x) {
+		var nr = properFraction(x),
+			n = nr[0],
+			r = nr[1],
+			m = r < 0 ? n - 1 : n + 1,
+			c = compare(abs(r), 0.5);
+		if (c === -1) {
+			return n;
+		}
+		if (c === 1) {
+			return m;
+		}
+		return even(n) ? n : m;
+	}
+	prelude.round = round;
 
 	// #### ceiling :: Number -> Number
 	// 
@@ -750,7 +766,7 @@
 	// Splits a string around whitespace into an array of strings.
 	// 
 	function words(string) {
-		return string.split(/\s/);
+		return string.replace(/^\s+|\s+$/g, "").split(/\s+/);
 	}
 	prelude.words = words;
 }());
