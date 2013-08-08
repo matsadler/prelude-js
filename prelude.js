@@ -45,6 +45,78 @@
 	}
 	prelude.not = not;
 
+	// ## 'Tuples'
+
+	// #### fst :: [a, b] -> a
+	// 
+	function fst(array) {
+		return array[0];
+	}
+	prelude.fst = fst;
+
+	// #### snd :: [a, b] -> b
+	// 
+	function snd(array) {
+		return array[1];
+	}
+	prelude.snd = snd;
+
+	// #### curry :: ([a, b] -> c) -> a -> b -> c
+	// 
+	// As Haskell's functions are wrapper by default, the `curry` function works
+	// a little differently to the usual definition, taking a function that
+	// operates on a pair, and returns one that takes two arguments. This
+	// function imitates Haskell's, taking a function that operates on an array
+	// and returning one that takes a varying number of arguments.
+	// 
+	// See `curry_` for a more traditional currying function.
+	// 
+	function curry(func) {
+		return function () {
+			return call(func, Array.prototype.slice.call(arguments));
+		};
+	}
+	prelude.curry = curry;
+
+	// #### uncurry :: (a -> b -> c) -> [a -> b] -> c
+	// 
+	// Takes a function that accepts multiple arguments, and returns one that
+	// operates on an array. See the comment on `curry` for the reasoning why,
+	// and `uncurry_` for a more traditional uncurry function.
+	// 
+	function uncurry(func) {
+		return function (array) {
+			return apply(func, array);
+		};
+	}
+	prelude.uncurry = uncurry;
+
+	// #### curry_ :: (a -> b -> c) -> (a -> (b -> c))
+	// 
+	function curry_(func) {
+		var applied = [],
+			wrapper = function (arg) {
+				applied.push(arg);
+				if (applied.length >= func.length) {
+					return apply(func, applied);
+				}
+				return wrapper;
+			};
+		return wrapper;
+	}
+	prelude.curry_ = curry_;
+
+	// #### uncurry_ :: (a -> (b -> c)) -> (a -> b -> c)
+	// 
+	function uncurry_(func) {
+		return function () {
+			return foldl(function (f, arg) {
+				return f(arg);
+			}, func, Array.prototype.slice.call(arguments));
+		};
+	}
+	prelude.uncurry_ = uncurry_;
+
 	// ## Ordering functions
 
 	// #### compare :: a -> a -> Number
