@@ -554,6 +554,21 @@
 	}
 	prelude.length = length;
 
+	// #### index :: [a] -> Number -> a
+	// 
+	// Returns the element at position i from array, starting from 0.
+	// 
+	function index(array, i) {
+		if (i < 0) {
+			error("negative index");
+		}
+		if (i > array.length) {
+			error("index too large");
+		}
+		return array[i];
+	}
+	prelude.index = index;
+
 	// #### reverse :: [a] -> [a]
 	// 
 	function reverse(array) {
@@ -787,6 +802,99 @@
 		return Array.prototype.indexOf.call(array, obj) >= 0;
 	}
 	prelude.elem = elem;
+
+	// ## Zipping and unzipping lists
+
+	// #### zip :: [a] -> [b] -> [[a, b]]
+	// 
+	function zip(a, b) {
+		return zipWith(function (a, b) {return [a, b];}, a, b);
+	}
+	prelude.zip = zip;
+
+	// #### zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+	// 
+	// This is actually an alias to zipGeneric, to match the Haskell prelude.
+	// 
+	prelude.zip3 = zipGeneric;
+
+	// #### zipGeneric :: [a] -> [b] -> [[a, b]]
+	// 
+	// Generic zip, that works with any number of lists, not possible in Haskell
+	// but we can do it here.
+	// 
+	function zipGeneric() {
+		return apply(partial(zipWithGeneric, function () {
+			return Array.prototype.slice.call(arguments);
+		}), arguments);
+	}
+	prelude.zipGeneric = zipGeneric;
+
+	// #### zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+	// 
+	function zipWith(func, a, b) {
+		var result = [],
+			minLength = min(a.length, b.length),
+			i;
+		for (i = 0; i < minLength; i += 1) {
+			result.push(func(a[i], b[i]));
+		}
+		return result;
+	}
+	prelude.zipWith = zipWith;
+
+	// #### zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+	// 
+	prelude.zipWith3 = zipWithGeneric;
+
+	// #### zipWithGeneric :: (a -> b -> c) -> [a] -> [b] -> [c]
+	// 
+	// Generic zipWith, that works with any number of lists.
+	// 
+	function zipWithGeneric(func) {
+		var args = tail(arguments),
+			result = [],
+			minLength = minimum(map(length, args)),
+			i;
+		for (i = 0; i < minLength; i += 1) {
+			x = map(partial(flip(index), i), args);
+			result.push(apply(func, x));
+		}
+		return result;
+	}
+	prelude.zipWithGeneric = zipWithGeneric;
+
+	// #### unzip :: [[a, b]] -> [[a], [b]]
+	// 
+	function unzip(array) {
+		var firsts = [],
+			seconds = [];
+		each(function(xs) {
+			firsts.push(xs[0]);
+			seconds.push(xs[1]);
+		}, array);
+		return [firsts, seconds];
+	}
+	prelude.unzip = unzip;
+
+	// #### unzip3 :: [[a, b, c]] -> [[a], [b], [c]]
+	// 
+	prelude.unzip3 = unzipGeneric;
+
+	// #### unzipGeneric :: [[a, b]] -> [[a], [b]]
+	// 
+	function unzipGeneric(array) {
+		var results = [],
+			minLength = minimum(map(length, array));
+		each(function(xs) {
+			for (i = 0; i < minLength; i += 1) {
+				results[i] = results[i] || [];
+				results[i].push(xs[i]);
+			}
+		}, array);
+		return results;
+	}
+	prelude.unzipGeneric = unzipGeneric;
 
 	// ## Functions on strings
 
