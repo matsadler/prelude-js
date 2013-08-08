@@ -898,6 +898,15 @@
 
 	// ## Functions on strings
 
+	// #### lines :: String -> [String]
+	// 
+	// Splits a string around newlines (\n) into an array of strings.
+	// 
+	function lines(string) {
+		return string.replace(/\n$/, "").split(/\n/);
+	}
+	prelude.lines = lines;
+
 	// #### words :: String -> [String]
 	// 
 	// Splits a string around whitespace into an array of strings.
@@ -906,4 +915,42 @@
 		return string.replace(/^\s+|\s+$/g, "").split(/\s+/);
 	}
 	prelude.words = words;
+
+	// #### unlines :: [String] -> String
+	// 
+	function unlines(array) {
+		return array.join("\n");
+	}
+	prelude.unlines = unlines;
+
+	// #### unwords :: [String] -> String
+	// 
+	function unwords(array) {
+		return array.join(" ");
+	}
+	prelude.unwords = unwords;
+
+	// ## Converting to and from String
+	
+	// ### Converting to String
+	
+	// #### show :: a -> String
+	// 
+	// Converts to a JSON string.
+	// 
+	function show(x) {
+		return JSON.stringify(x) || error("can not show " + typeof x);
+	}
+	prelude.show = show;
+
+	// ### Converting from String
+
+	// #### read :: String -> a
+	// 
+	// Reads JSON formatted data.
+	// 
+	function read(x) {
+		return JSON.parse(x);
+	}
+	prelude.read = read;
 }());
