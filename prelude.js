@@ -220,6 +220,13 @@
 	// 
 	prelude.acos = Math.acos;
 
+	// #### properFraction :: Number -> (Number, Number)
+	// 
+	function properFraction(x) {
+		return quotRem(x, 1);
+	}
+	prelude.properFraction = properFraction;
+
 	// #### truncate :: Number -> Number
 	// 
 	// `truncate(x)` returns the integer nearest `x`, between 0 and `x`, e.g.
@@ -298,6 +305,28 @@
 		return x % 2 !== 0;
 	}
 	prelude.odd = odd;
+
+	// #### gcd :: Number -> Number -> Number
+	// 
+	function gcd(x, y) {
+		var ox;
+		x = abs(x);
+		y = abs(y);
+		while (y !== 0) {
+			ox = x;
+			x = y;
+			y = rem(ox, y);
+		}
+		return x;
+	}
+	prelude.gcd = gcd;
+	
+	// #### lcm :: Number -> Number -> Number
+	// 
+	function lcm(x, y) {
+		return abs(quot(x, gcd(x, y)) * y);
+	}
+	prelude.lcm = lcm;
 
 	// ## Miscellaneous functions
 
