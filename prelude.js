@@ -339,6 +339,20 @@
 	}
 	prelude.id = id;
 
+	// #### const_ :: a -> b -> a
+	// 
+	// If called with a single argument returns a function that always returns
+	// that original argument. If called with multiple arguments returns the
+	// first.
+	// 
+	function const_(x) {
+		if (arguments.length === 1) {
+			return partial(const_, x);
+		}
+		return x;
+	}
+	prelude.const_ = const_;
+
 	// #### compose :: (b -> c) -> (a -> b) -> a -> c
 	// 
 	// Takes two functions and returns a new function that applies the first to
