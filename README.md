@@ -17,6 +17,31 @@ after:
 ## Boolean functions
 #### not :: a -> Boolean
 
+## 'Tuples'
+#### fst :: [a, b] -> a
+
+#### snd :: [a, b] -> b
+
+#### curry :: ([a, b] -> c) -> a -> b -> c
+
+As Haskell's functions are wrapper by default, the `curry` function works
+a little differently to the usual definition, taking a function that
+operates on a pair, and returns one that takes two arguments. This
+function imitates Haskell's, taking a function that operates on an array
+and returning one that takes a varying number of arguments.
+
+See `curry_` for a more traditional currying function.
+
+#### uncurry :: (a -> b -> c) -> [a -> b] -> c
+
+Takes a function that accepts multiple arguments, and returns one that
+operates on an array. See the comment on `curry` for the reasoning why,
+and `uncurry_` for a more traditional uncurry function.
+
+#### curry_ :: (a -> b -> c) -> (a -> (b -> c))
+
+#### uncurry_ :: (a -> (b -> c)) -> (a -> b -> c)
+
 ## Ordering functions
 #### compare :: a -> a -> Number
 
@@ -25,11 +50,13 @@ otherwise.
 
 #### max :: a -> a -> a
 
-Returns the greater of the two arguments.
+Returns the greater of the two arguments. If the arguments are equal or
+the comparison is invalid the second argument is returned.
 
 #### min :: a -> a -> a
 
-Returns the lesser of the two arguments.
+Returns the lesser of the two arguments. If the arguments are equal or
+the comparison is invalid the first argument is returned.
 
 ## Numeric functions
 #### negate :: Number -> Number
@@ -85,6 +112,8 @@ This is not quite the same as the Javascript `%`, see `rem`.
 
 #### acos :: Number -> Number
 
+#### properFraction :: Number -> (Number, Number)
+
 #### truncate :: Number -> Number
 
 `truncate(x)` returns the integer nearest `x`, between 0 and `x`, e.g.
@@ -94,7 +123,7 @@ This is not quite the same as the Javascript `%`, see `rem`.
 
 #### round :: Number -> Number
 
-Returns the nearest integer. .5 rounds towards 0.
+Returns the nearest integer. .5 rounds towards even.
 
 #### ceiling :: Number -> Number
 
@@ -114,10 +143,20 @@ Returns the nearest integer not greater than the number supplied.
 
 #### odd :: Number -> Boolean
 
+#### gcd :: Number -> Number -> Number
+
+#### lcm :: Number -> Number -> Number
+
 ## Miscellaneous functions
 #### id :: a -> a
 
 Identity. Simply returns its argument.
+
+#### const_ :: a -> b -> a
+
+If called with a single argument returns a function that always returns
+that original argument. If called with multiple arguments returns the
+first.
 
 #### compose :: (b -> c) -> (a -> b) -> a -> c
 
@@ -141,7 +180,7 @@ and `baz`, and is equivalent to `foo(bar, baz)`.
 
 #### apply :: (a -> b) -> [a] -> b
 
-`call(foo, [bar, baz])` calls the function `foo` with the arguments
+`apply(foo, [bar, baz])` calls the function `foo` with the arguments
 `bar` and `baz`, and is equivalent to `foo(bar, baz)`.
 
 #### until :: (a -> Boolean) -> (a -> a) -> a -> a
@@ -156,8 +195,8 @@ and `baz`, and is equivalent to `foo(bar, baz)`.
 
 #### each :: (a -> b) -> [a] -> [a]
 
-Applies a prelude.to = function to each element in an array, returning
-the original array.
+Applies a function to each element in an array, returning the original
+array.
 
 This wouldn't be useful in a pure functional context, but in a language
 like JavaScript where site effects are possible it can be handy.
@@ -179,9 +218,9 @@ only the elements for which true was returned.
 
 #### partition :: (a -> Boolean) -> [a] -> [[a], [a]]
 
-Applies a prelude.to = function to each element in an array, returning a
-pair of arrays, the first of the elements for which true was returned,
-the second the elements for which false was returned.
+Applies a function to each element in an array, returning a pair of
+arrays, the first of the elements for which true was returned, the
+second the elements for which false was returned.
 
 #### head :: [a] -> a
 
@@ -206,6 +245,10 @@ Returns true if an array is empty, false otherwise.
 #### length :: [a] -> Number
 
 Returns the length of an array. O(1).
+
+#### index :: [a] -> Number -> a
+
+Returns the element at position i from array, starting from 0.
 
 #### reverse :: [a] -> [a]
 
@@ -278,8 +321,53 @@ Never returns.
 
 Returns true if element is in the array, false otherwise.
 
+## Zipping and unzipping lists
+#### zip :: [a] -> [b] -> [[a, b]]
+
+#### zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+
+This is actually an alias to zipGeneric, to match the Haskell prelude.
+
+#### zipGeneric :: [a] -> [b] -> [[a, b]]
+
+Generic zip, that works with any number of lists, not possible in Haskell
+but we can do it here.
+
+#### zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+
+#### zipWith3 :: (a -> b -> c -> d) -> [a] -> [b] -> [c] -> [d]
+
+#### zipWithGeneric :: (a -> b -> c) -> [a] -> [b] -> [c]
+
+Generic zipWith, that works with any number of lists.
+
+#### unzip :: [[a, b]] -> [[a], [b]]
+
+#### unzip3 :: [[a, b, c]] -> [[a], [b], [c]]
+
+#### unzipGeneric :: [[a, b]] -> [[a], [b]]
+
 ## Functions on strings
+#### lines :: String -> [String]
+
+Splits a string around newlines (\n) into an array of strings.
+
 #### words :: String -> [String]
 
 Splits a string around whitespace into an array of strings.
+
+#### unlines :: [String] -> String
+
+#### unwords :: [String] -> String
+
+## Converting to and from String
+### Converting to String
+#### show :: a -> String
+
+Converts to a JSON string.
+
+### Converting from String
+#### read :: String -> a
+
+Reads JSON formatted data.
 
