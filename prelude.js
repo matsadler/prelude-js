@@ -177,7 +177,10 @@
 
 	// #### pi :: Number
 	// 
-	prelude.pi = Math.pi;
+	function pi() {
+		return Math.PI;
+	}
+	prelude.pi = pi;
 
 	// #### exp :: Number -> Number
 	// 
