@@ -555,14 +555,14 @@
 	// #### and :: [a] -> Boolean
 	// 
 	function and(array) {
-		return all(array, id);
+		return all(id, array);
 	}
 	prelude.and = and;
 
 	// #### or :: [a] -> Boolean
 	// 
 	function or(array) {
-		return any(array, id);
+		return any(id, array);
 	}
 	prelude.or = or;
 
@@ -676,7 +676,7 @@
 	prelude.scanr = scanr;
 
 	// #### scanr1 :: (a -> a -> a) -> [a] -> [a]
-	function scanr1(array, func) {
+	function scanr1(func, array) {
 		return scanr(func, last(array), init(array));
 	}
 	prelude.scanr1 = scanr1;
