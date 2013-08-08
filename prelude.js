@@ -346,7 +346,7 @@
 
 	// #### apply :: (a -> b) -> [a] -> b
 	// 
-	// `call(foo, [bar, baz])` calls the function `foo` with the arguments
+	// `apply(foo, [bar, baz])` calls the function `foo` with the arguments
 	// `bar` and `baz`, and is equivalent to `foo(bar, baz)`.
 	// 
 	function apply(func, args) {
@@ -379,8 +379,8 @@
 
 	// #### each :: (a -> b) -> [a] -> [a]
 	// 
-	// Applies a prelude.to = function to each element in an array, returning
-	// the original array.
+	// Applies a function to each element in an array, returning the original
+	// array.
 	// 
 	// This wouldn't be useful in a pure functional context, but in a language
 	// like JavaScript where site effects are possible it can be handy.
@@ -434,9 +434,9 @@
 
 	// #### partition :: (a -> Boolean) -> [a] -> [[a], [a]]
 	// 
-	// Applies a prelude.to = function to each element in an array, returning a
-	// pair of arrays, the first of the elements for which true was returned,
-	// the second the elements for which false was returned.
+	// Applies a function to each element in an array, returning a pair of
+	// arrays, the first of the elements for which true was returned, the
+	// second the elements for which false was returned.
 	// 
 	function partition(func, array) {
 		return foldl(function (acc, element) {
