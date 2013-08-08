@@ -613,9 +613,9 @@
 	// #### product :: [Number] -> Number
 	// 
 	function product(array) {
-		return foldl(function (acc, x) {
+		return foldl1(function (acc, x) {
 			return acc * x;
-		}, 0, array);
+		}, array);
 	}
 	prelude.product = product;
 
